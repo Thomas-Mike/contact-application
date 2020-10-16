@@ -9,14 +9,27 @@ import java.util.Scanner;
 
 public class Contacts {
     public static void main(String[] args) {
-        String directoryName = "data";
-        String fileName = "contact_List.txt";
-        try{
-            Path dataFilePath = ContactIO.createDirectoryAndFile(directoryName, fileName);
-        }catch (IOException ex){
-            System.out.println("Cannot create file");
-            ex.printStackTrace();
-        }
+//        String directoryName = "data";
+//        String fileName = "contact_List.txt";
+//        try{
+//            Path dataFilePath = ContactIO.createDirectoryAndFile(directoryName, fileName);
+//
+//
+//        }catch (IOException ex){
+//            System.out.println("Cannot create file");
+//            ex.printStackTrace();
+//        }
+
+//        ContactIO.addContact();
+
+
+
+
+
+
+
+
+
 
 //        showMainMenu();
 
@@ -42,7 +55,7 @@ public class Contacts {
                 break;
             case 2:
                 System.out.println("Add a Contact");
-//                addContact();
+                ContactIO.addContact();
                 break;
             case 3:
                 System.out.println("Search contacts.Contacts");
