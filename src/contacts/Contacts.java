@@ -9,18 +9,19 @@ import java.util.Scanner;
 
 public class Contacts {
     public static void main(String[] args) {
-//        String directoryName = "data";
-//        String fileName = "contact_List.txt";
-//        try{
-//            Path dataFilePath = ContactIO.createDirectoryAndFile(directoryName, fileName);
-//
-//
-//        }catch (IOException ex){
-//            System.out.println("Cannot create file");
-//            ex.printStackTrace();
-//        }
+        String directoryName = "data";
+        String fileName = "contact_List.txt";
+        try{
+            Path dataFilePath = ContactIO.createDirectoryAndFile(directoryName, fileName);
 
-//        ContactIO.addContact();
+
+
+        }catch (IOException ex){
+            System.out.println("Cannot create file");
+            ex.printStackTrace();
+        }
+
+        ContactIO.addContact();
 
 
 

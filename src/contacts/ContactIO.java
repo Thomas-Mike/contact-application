@@ -31,14 +31,25 @@ public class ContactIO {
         System.out.println("Enter persons full name name: ");
         Scanner scan = new Scanner(System.in);
         String fullName = scan.nextLine();
-        System.out.println("Please enter their phone number");
-       int phoneNumber = 0;
-        try{
-           phoneNumber = scan.nextInt();
-       }catch (InputMismatchException ignored){
-            addContact(); //Broken code
-       }
+        int phoneNumber = getInt();
         Contact userPerson = new Contact(fullName,phoneNumber);
         System.out.println(userPerson.getPhoneNumber());
     }
+
+    public static int getInt(){
+        System.out.println("Please enter a phone number.");
+        Scanner scan = new Scanner(System.in);
+        int phoneNumber;
+        try{
+             phoneNumber = scan.nextInt();
+        }catch(InputMismatchException inMisMat){
+            System.err.println(inMisMat);
+            System.err.println("The value you entered was not an integer,please try again.");
+            return getInt();
+        }
+        return phoneNumber;
+    }
+
+
+
 }
