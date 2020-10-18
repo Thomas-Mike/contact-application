@@ -3,42 +3,68 @@ package contacts;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class ContactIO {
-    public static Path createDirectoryAndFile(String directoryName, String fileName)throws IOException {
-        Path directoryPath = Paths.get(directoryName);
-        Path dataFilePath = Paths.get(directoryName, fileName);
-        // codeup-java-exercises/directoryName/fileName
 
-
-        //We have to create a directory first before we create the file.
-
-        if (Files.notExists(directoryPath)) {
-            Files.createDirectories(directoryPath); //creates directory if it doesn't already exist
+    public static void addContact(Path dataFilePath) throws IOException {
+        String fullName = enterName();
+        String phoneNumber = enterPhoneNumber();
+        if (!(phoneNumber.length() == 7 || phoneNumber.length() == 10)) {
+            addContact(dataFilePath);
+        } else {
+            String contactString = fullName + ":" + phoneNumber;
+            Files.write(dataFilePath, Collections.singletonList(contactString), StandardOpenOption.APPEND);
+            System.out.println("\nWould you like to add another contact? [Y/N]");
+            String response = goAgain();
+            if (response.equalsIgnoreCase("y")) {
+                addContact(dataFilePath);
+            } else if (response.equalsIgnoreCase("n")) {
+                Contacts.showMainMenu(dataFilePath);
+            } else {
+                goAgain();
+            }
         }
-
-        if (!Files.exists(dataFilePath)) {
-            Files.createFile(dataFilePath);
-        }
-
-        return dataFilePath;
     }
 
-    public static void addContact(){
-        System.out.println("Enter persons full name name: ");
-        Scanner scan = new Scanner(System.in);
-        String fullName = scan.nextLine();
-        System.out.println("Please enter their phone number");
-       int phoneNumber = 0;
-        try{
-           phoneNumber = scan.nextInt();
-       }catch (InputMismatchException ignored){
-            addContact(); //Broken code
-       }
-        Contact userPerson = new Contact(fullName,phoneNumber);
-        System.out.println(userPerson.getPhoneNumber());
+    private static String goAgain() {
+        Scanner input = new Scanner(System.in);
+        return input.nextLine();
     }
+
+    public static void viewContacts(Path dataFilePath) throws IOException {
+        System.out.print("Name                     | Phone Number\n---------------------------------------------");
+        List<String> fileContents = Files.readAllLines(dataFilePath);
+        System.out.println();
+        for (int i = 0; i < fileContents.size(); i++) {
+            String name = fileContents.get(i).substring(0, fileContents.get(i).indexOf(':'));
+            String phone = fileContents.get(i).substring((fileContents.get(i).indexOf(':')) + 1);
+            String formatPhone;
+            if (phone.length() == 7) {
+                formatPhone = fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
+                        fileContents.get(i).indexOf(':') + 4) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4);
+            } else {
+                formatPhone = "(" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
+                        fileContents.get(i).indexOf(':') + 4) + ")" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4,
+                        fileContents.get(i).indexOf(':') + 7) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 7);
+            }
+            System.out.printf("%-25s| %s%n", name, formatPhone);
+        }
+        Contacts.showMainMenu(dataFilePath);
+    }
+
+    public static String enterName() {
+        Scanner contactInput = new Scanner(System.in);
+        System.out.print("Enter Contact Name: ");
+        return contactInput.nextLine().trim();
+    }
+
+    public static String enterPhoneNumber() {
+        Scanner phoneInput = new Scanner(System.in);
+        System.out.print("Enter the Contact's Phone Number: ");
+        String phone = phoneInput.nextLine();
+        return phone;
+    }
+
 }
