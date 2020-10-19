@@ -10,7 +10,7 @@ public class ContactIO {
 
     public static void addContact(Path dataFilePath) throws IOException {
         String fullName = enterName();
-        Integer phoneValue = getInt();
+        Long phoneValue = getPhoneNumber();
 
         String phoneNumber = phoneValue.toString();
 
@@ -56,16 +56,16 @@ public class ContactIO {
     }
 
 
-    public static int getInt(){
+    public static long getPhoneNumber(){
         System.out.println("Please enter a phone number.");
         Scanner scan = new Scanner(System.in);
-        int phoneNumber;
+        long phoneNumber;
         try{
-             phoneNumber = scan.nextInt();
+             phoneNumber = scan.nextLong();
         }catch(InputMismatchException inMisMat){
             System.err.println(inMisMat);
             System.err.println("The value you entered was not an integer,please try again.");
-            return getInt();
+            return getPhoneNumber();
         }
         return phoneNumber;
     }
