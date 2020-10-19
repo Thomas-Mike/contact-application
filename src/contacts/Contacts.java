@@ -48,7 +48,7 @@ public class Contacts {
                 ContactIO.addContact(dataFilePath);
                 break;
             case 3:
-                System.out.println("Search Contacts");
+                ContactIO.searchContacts(dataFilePath);
                 break;
             case 4:
                 System.out.println("Delete a Contact");

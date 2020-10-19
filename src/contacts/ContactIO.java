@@ -11,6 +11,7 @@ public class ContactIO {
     public static void addContact(Path dataFilePath) throws IOException {
         String fullName = enterName();
         String phoneNumber = enterPhoneNumber();
+
         if (!(phoneNumber.length() == 7 || phoneNumber.length() == 10)) {
             addContact(dataFilePath);
         } else {
@@ -66,5 +67,19 @@ public class ContactIO {
         String phone = phoneInput.nextLine();
         return phone;
     }
+
+    public static void searchContacts(Path dataFilePath) throws IOException {
+        System.out.println("Enter Contact to Search");
+        Scanner input = new Scanner(System.in);
+        String searchParam = input.nextLine();
+        List<String> fileContents = Files.readAllLines(dataFilePath);
+        for (String contact : fileContents) {
+            if (contact.contains(searchParam)){
+                System.out.println(contact);
+            }
+        }
+        Contacts.showMainMenu(dataFilePath);
+    }
+
 
 }
