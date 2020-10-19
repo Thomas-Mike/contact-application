@@ -3,38 +3,66 @@ package contacts;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 public class ContactIO {
-    public static Path createDirectoryAndFile(String directoryName, String fileName)throws IOException {
-        Path directoryPath = Paths.get(directoryName);
-        Path dataFilePath = Paths.get(directoryName, fileName);
-        // codeup-java-exercises/directoryName/fileName
 
+    public static void addContact(Path dataFilePath) throws IOException {
+        String fullName = enterName();
+        Integer phoneValue = getInt();
 
-        //We have to create a directory first before we create the file.
+        String phoneNumber = phoneValue.toString();
 
-        if (Files.notExists(directoryPath)) {
-            Files.createDirectories(directoryPath); //creates directory if it doesn't already exist
+        if (!(phoneNumber.length() == 7 || phoneNumber.length() == 10)) {
+            addContact(dataFilePath);
+        } else {
+            String contactString = fullName + ":" + phoneNumber;
+            Files.write(dataFilePath, Collections.singletonList(contactString), StandardOpenOption.APPEND);
+            System.out.println("\nWould you like to add another contact? [Y/N]");
+            String response = goAgain();
+            if (response.equalsIgnoreCase("y")) {
+                addContact(dataFilePath);
+            } else if (response.equalsIgnoreCase("n")) {
+                Contacts.showMainMenu(dataFilePath);
+            } else {
+                goAgain();
+            }
         }
-
-        if (!Files.exists(dataFilePath)) {
-            Files.createFile(dataFilePath);
-        }
-
-        return dataFilePath;
     }
 
-    public static Contact createContact(){
-        System.out.println("Enter persons full name: ");
-        Scanner scan = new Scanner(System.in);
-        String fullName = scan.nextLine();
-        int phoneNumber = getInt();
-        Contact userPerson = new Contact(fullName,phoneNumber);
-        return userPerson;
+    private static String goAgain() {
+        Scanner input = new Scanner(System.in);
+        return input.nextLine();
     }
+
+    public static void viewContacts(Path dataFilePath) throws IOException {
+        System.out.print("Name                     | Phone Number\n---------------------------------------------");
+        List<String> fileContents = Files.readAllLines(dataFilePath);
+        System.out.println();
+        for (int i = 0; i < fileContents.size(); i++) {
+            String name = fileContents.get(i).substring(0, fileContents.get(i).indexOf(':'));
+            String phone = fileContents.get(i).substring((fileContents.get(i).indexOf(':')) + 1);
+            String formatPhone;
+            if (phone.length() == 7) {
+                formatPhone = fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
+                        fileContents.get(i).indexOf(':') + 4) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4);
+            } else {
+                formatPhone = "(" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
+                        fileContents.get(i).indexOf(':') + 4) + ")" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4,
+                        fileContents.get(i).indexOf(':') + 7) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 7);
+            }
+            System.out.printf("%-25s| %s%n", name, formatPhone);
+        }
+        Contacts.showMainMenu(dataFilePath);
+    }
+
+    public static String enterName() {
+        Scanner contactInput = new Scanner(System.in);
+        System.out.print("Enter Contact Name: ");
+        return contactInput.nextLine().trim();
+    }
+
 
     public static int getInt(){
         System.out.println("Please enter a phone number.");
@@ -51,5 +79,17 @@ public class ContactIO {
     }
 
 
+    public static void searchContacts(Path dataFilePath) throws IOException {
+        System.out.println("Enter Contact to Search");
+        Scanner input = new Scanner(System.in);
+        String searchParam = input.nextLine();
+        List<String> fileContents = Files.readAllLines(dataFilePath);
+        for (String contact : fileContents) {
+            if (contact.contains(searchParam)){
+                System.out.println(contact);
+            }
+        }
+        Contacts.showMainMenu(dataFilePath);
+    }
 
 }
