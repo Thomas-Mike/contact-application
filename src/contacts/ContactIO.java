@@ -27,13 +27,13 @@ public class ContactIO {
         return dataFilePath;
     }
 
-    public static void addContact(){
-        System.out.println("Enter persons full name name: ");
+    public static Contact createContact(){
+        System.out.println("Enter persons full name: ");
         Scanner scan = new Scanner(System.in);
         String fullName = scan.nextLine();
         int phoneNumber = getInt();
         Contact userPerson = new Contact(fullName,phoneNumber);
-        System.out.println(userPerson.getPhoneNumber());
+        return userPerson;
     }
 
     public static int getInt(){

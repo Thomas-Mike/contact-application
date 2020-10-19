@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Contacts {
@@ -14,14 +16,17 @@ public class Contacts {
         try{
             Path dataFilePath = ContactIO.createDirectoryAndFile(directoryName, fileName);
 
-
+         String name = ContactIO.createContact().getFullNameName();
+         int number = ContactIO.createContact().getPhoneNumber();
+            System.out.println(name);
+            System.out.println(number);
 
         }catch (IOException ex){
             System.out.println("Cannot create file");
             ex.printStackTrace();
         }
 
-        ContactIO.addContact();
+
 
 
 
@@ -56,7 +61,7 @@ public class Contacts {
                 break;
             case 2:
                 System.out.println("Add a Contact");
-                ContactIO.addContact();
+                ContactIO.createContact();
                 break;
             case 3:
                 System.out.println("Search contacts.Contacts");
