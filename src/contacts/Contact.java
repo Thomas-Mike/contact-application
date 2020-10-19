@@ -19,6 +19,8 @@ public class Contact {
         return this.phoneNumber;
     }
 
+
+
     //Bonus for end edit contact
 //    public void setFirstName(){
 //

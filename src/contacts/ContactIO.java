@@ -10,7 +10,9 @@ public class ContactIO {
 
     public static void addContact(Path dataFilePath) throws IOException {
         String fullName = enterName();
-        String phoneNumber = enterPhoneNumber();
+        Integer phoneValue = getInt();
+
+        String phoneNumber = phoneValue.toString();
 
         if (!(phoneNumber.length() == 7 || phoneNumber.length() == 10)) {
             addContact(dataFilePath);
@@ -61,12 +63,21 @@ public class ContactIO {
         return contactInput.nextLine().trim();
     }
 
-    public static String enterPhoneNumber() {
-        Scanner phoneInput = new Scanner(System.in);
-        System.out.print("Enter the Contact's Phone Number: ");
-        String phone = phoneInput.nextLine();
-        return phone;
+
+    public static int getInt(){
+        System.out.println("Please enter a phone number.");
+        Scanner scan = new Scanner(System.in);
+        int phoneNumber;
+        try{
+             phoneNumber = scan.nextInt();
+        }catch(InputMismatchException inMisMat){
+            System.err.println(inMisMat);
+            System.err.println("The value you entered was not an integer,please try again.");
+            return getInt();
+        }
+        return phoneNumber;
     }
+
 
     public static void searchContacts(Path dataFilePath) throws IOException {
         System.out.println("Enter Contact to Search");
@@ -80,6 +91,5 @@ public class ContactIO {
         }
         Contacts.showMainMenu(dataFilePath);
     }
-
 
 }

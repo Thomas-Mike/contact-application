@@ -4,10 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Contacts {
+
+
+
+
     public static void main(String[] arg) throws IOException {
         String directoryName = "data";
         String fileName = "contact_List.txt";
@@ -25,6 +31,7 @@ public class Contacts {
             ex.printStackTrace();
         }
         showMainMenu(dataFilePath);
+
     }
 
     public static void showMainMenu(Path dataFilePath) throws IOException {
@@ -45,7 +52,9 @@ public class Contacts {
                 ContactIO.viewContacts(dataFilePath);
                 break;
             case 2:
+                System.out.println("Add a Contact");
                 ContactIO.addContact(dataFilePath);
+
                 break;
             case 3:
                 ContactIO.searchContacts(dataFilePath);
