@@ -43,15 +43,7 @@ public class ContactIO {
         for (int i = 0; i < fileContents.size(); i++) {
             String name = fileContents.get(i).substring(0, fileContents.get(i).indexOf(':'));
             String phone = fileContents.get(i).substring((fileContents.get(i).indexOf(':')) + 1);
-            String formatPhone;
-            if (phone.length() == 7) {
-                formatPhone = fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
-                        fileContents.get(i).indexOf(':') + 4) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4);
-            } else {
-                formatPhone = "(" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 1,
-                        fileContents.get(i).indexOf(':') + 4) + ")" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 4,
-                        fileContents.get(i).indexOf(':') + 7) + "-" + fileContents.get(i).substring(fileContents.get(i).indexOf(':') + 7);
-            }
+            String formatPhone = formatPhoneNumber(phone, fileContents);
             System.out.printf("%-25s| %s%n", name, formatPhone);
         }
         Contacts.showMainMenu(dataFilePath);
@@ -86,7 +78,10 @@ public class ContactIO {
         List<String> fileContents = Files.readAllLines(dataFilePath);
         for (String contact : fileContents) {
             if (contact.contains(searchParam)){
-                System.out.println(contact);
+                String name = contact.substring(0, contact.indexOf(':'));
+                String phone = contact.substring((contact.indexOf(':')) + 1);
+                String formatPhone = formatPhoneNumber(phone, fileContents);
+                System.out.printf("%-25s| %s%n", name, formatPhone);
             }
         }
         Contacts.showMainMenu(dataFilePath);
@@ -106,5 +101,17 @@ public class ContactIO {
         Files.write(dataFilePath, modifiedList);
         Contacts.showMainMenu(dataFilePath);
     }
+
+    public static String formatPhoneNumber(String phoneNumber, List<String> fileContents) {
+        String formatPhone;
+        if (phoneNumber.length() == 7) {
+            formatPhone = phoneNumber.substring(0,3) + "-" + phoneNumber.substring(3);
+        } else {
+            formatPhone =
+                    "(" + phoneNumber.substring(0, 3) + ")" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6);
+        }
+        return formatPhone;
+    }
+
 
 }
