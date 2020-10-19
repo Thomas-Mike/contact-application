@@ -61,6 +61,7 @@ public class Contacts {
                 break;
             case 4:
                 System.out.println("Delete a Contact");
+                ContactIO.deleteContact(dataFilePath);
                 break;
             case 5:
                 System.out.println("EXITING...");

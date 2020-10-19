@@ -92,4 +92,19 @@ public class ContactIO {
         Contacts.showMainMenu(dataFilePath);
     }
 
+    public static void deleteContact(Path dataFilePath) throws IOException{
+        System.out.println("Enter the contact you want to delete.");
+        Scanner input = new Scanner(System.in);
+        String searchParam = input.nextLine();
+        List<String> fileContents = Files.readAllLines(dataFilePath);
+        List<String> modifiedList = new ArrayList<>();
+        for(String contact : fileContents){
+            if (!contact.contains(searchParam)){
+                modifiedList.add(contact);
+            }
+        }
+        Files.write(dataFilePath, modifiedList);
+        Contacts.showMainMenu(dataFilePath);
+    }
+
 }
